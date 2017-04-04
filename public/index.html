@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet">
+    <script src="https://use.fontawesome.com/9abb7708ad.js"></script>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/main.css">
+    <title>To-do list</title>
+</head>
+<body ng-cloak>
+    <div class="main-container">
+        <header class="main-header">
+            <div class="wrapper">
+                <h1>To-Do List</h1>
+            </div>
+        </header>
+        <main class="main">
+            <div class="wrapper">
+                <div class="lists-container clearfix" ng-controller="listsCtrl as listsCtrl">
+                    <div class="list" ng-repeat="list in listsCtrl.lists" ng-controller="listCtrl as listCtrl">
+                        <h2>{{list.listName}}</h2>
+                        <div class="card" ng-controller="cardCtrl as cardCtrl" ng-repeat="card in listCtrl.getCards(list)">
+                            <div ng-if="!cardCtrl.isEditing">
+                                <h3>Title:</h3>
+                                <p>{{card.title}}</p>
+                                <h3>Description:</h3>
+                                <p>{{card.description}}</p>
+                                <div ng-click="cardCtrl.editCard(card)" class="card-menu-icon edit-card-icon">
+                                </div>
+                                <div ng-click="cardCtrl.deleteCard(card)" class="card-menu-icon remove-card-icon">
+                                </div>
+                            </div>
+                            <div ng-if="cardCtrl.isEditing">
+                                <form ng-submit="cardCtrl.updateCard(card)">
+                                    <h3>Title:</h3>
+                                    <input type="text" ng-model="cardCtrl.editingCard.title">
+                                    <h3>Description:</h3>
+                                    <input type="text" ng-model="cardCtrl.editingCard.description">
+                                    <input type="submit" class="submit-button" value="Add">
+                                </form>
+                            </div>
+                        </div>
+                        <div class="list-menu-icon add-card-icon" ng-click="listCtrl.showAddCard = !listCtrl.showAddCard"></div>
+                        <div class="add-new-card" ng-show="listCtrl.showAddCard">
+                            <form ng-submit="listCtrl.createCard(list)">
+                                <h3>Title:</h3>
+                                <input type="text" ng-model="listCtrl.cardTitle" class="new-card-input">
+                                <h3>Description:</h3>
+                                <input type="text" ng-model="listCtrl.cardDescription" class="new-card-input">
+                                <input type="submit" class="submit-button" ng-click="listCtrl.showAddCard = !listCtrl.showAddCard" value="Add">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/factories/listFactory.js"></script>
+    <script src="js/factories/cardFactory.js"></script>
+    <script src="js/controllers/listsCtrl.js"></script>
+    <script src="js/controllers/listCtrl.js"></script>
+    <script src="js/controllers/cardCtrl.js"></script>
+</body>
+</html>
